@@ -1,0 +1,44 @@
+<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+    <div class="sb-sidenav-menu">
+        <div class="nav">
+            <div class="sb-sidenav-menu-heading">Core</div>
+            <a class="nav-link" href="{% url 'dashboard' %}">
+                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                Dashboard
+            </a>
+            <a class="nav-link" href="{% url 'users' %}">
+                <div class="sb-nav-link-icon"><i class="fas fas fa-columns"></i></div>
+                User Manager
+            </a>
+            <a class="nav-link" href="{% url 'list' %}">
+                <div class="sb-nav-link-icon"><i class="fas fa-fw fa-database"></i></div>
+                CRUD App
+            </a>
+            <a class="nav-link" href="{% url 'fileupload' %}">
+                <div class="sb-nav-link-icon"><i class="fas fa-fw fa-tables"></i></div>
+                File Upload
+            </a>
+            <a class="nav-link" href="{% url 'ajax' %}">
+                <div class="sb-nav-link-icon"><i class="fas fa-fw fa-bullseye"></i></div>
+                Ajax Crud
+            </a>
+            <div class="sb-sidenav-menu-heading">Interface</div>
+            
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                Other
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                    <a class="nav-link collapsed" href="{% url 'upload_csv' %}">
+                        CSV Upload
+                    </a>
+                    <a class="nav-link collapsed" href="{% url 'changePassword' %}">
+                        Change Password
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>

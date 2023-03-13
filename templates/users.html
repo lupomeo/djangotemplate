@@ -1,0 +1,278 @@
+
+{% extends 'layout/app.html' %}
+
+
+
+{% block body %}
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">USERS</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Lista utenti</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>Lista utenti
+                <a href="javascript:void(0)" onClick="add()" class="btn btn-sm btn-success" style="padding: 8px; float: right; background-color: black; color: white;">
+                    <svg width="18px" class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                    </path>
+                </svg>
+                    Aggiungi Utente
+                </a>
+            </div>
+            <div class="card-body">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <table class="table table-bordered" id="ourtable2" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome utente</th>
+                        <th>Nome</th>
+                        <th>Cognome</th>
+                        <th>Email</th>
+                        <th>Staff</th>
+                        <th>Azione</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- boostrap product model -->
+<div class="modal fade" id="product-modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="ProductModal"></h4>
+            </div>
+            <div class="modal-body">
+                <form action="javascript:void(0)" id="ProductForm" name="ProductForm" class="form-horizontal"
+                    method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" id="id">
+                    <div class="form-group">
+                        <label for="username" class="col-sm-2 control-label">Username</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="username" name="username"
+                                placeholder="Utente" maxlength="50" required="">
+                        </div>
+                    </div>
+                    <div class="form-group" style="padding-top:16px;">
+                        <label for="first_name" class="col-sm-2 control-label">Nome</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="first_name" name="first_name"
+                                placeholder="Nome" maxlength="50" required="">
+                        </div>
+                    </div>
+                    <div class="form-group" style="padding-top:16px;">
+                        <label for="last_name" class="col-sm-2 control-label">Cognome</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="last_name" name="last_name"
+                                placeholder="Cognome" maxlength="50" required="">
+                        </div>
+                    </div>
+                    <div class="form-group" style="padding-top:16px;">
+                        <label for="email" class="col-sm-10 control-label">Email</label>
+                        <div class="col-sm-12">
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="Email" maxlength="50" required="">
+                        </div>
+                    </div>
+                    <div class="form-group" style="padding-top:16px;">
+                        <div class="col-sm-12">
+                        <label for="is_staff" class="col-sm-2 control-label">Ruolo</label>
+                        <select name="is_staff" class="form-select mb-0" id="is_staff"
+                            aria-label="is_staff">
+                            <option value="0">User</option>
+                            <option value="1">Staff</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="padding-top:16px;">
+                        <label for="password" class="control-label" id="passl">Password</label>
+                        <div class="col-sm-12">
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="Password" maxlength="50" >
+                        </div>
+                    </div>
+                                <!-- End of Form -->
+                    <div class="col-sm-offset-2 col-sm-10"  style="padding-top:16px;">
+                    <button type="submit" class="btn btn-outline-primary" id="btn-save">Salva
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end bootstrap model -->
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        var table = $('#ourtable2').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.3/i18n/it-IT.json',
+            },
+           "ajax": {
+              "processing": true,
+              "url": "{% url 'ausers' %}",
+              "dataSrc": "",
+            },
+            "columns": [
+                    { "data": "id"},
+                    { "data": "username"},
+                    { "data": "first_name"},
+                    { "data": "last_name"},
+                    { "data": "email"},
+                    { "data": "is_staff"},
+                    {
+                        "data": null,
+                        "render": function ( data, type, row, meta ) {
+                            return '<div style="margin: 0 auto; text-align:center;"><button class="btn btn-link text-dark dropdown-toggle  m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="/static/assets/img/dotsvertical.svg" width="18" height="18"><span class="visually-hidden">Toggle Dropdown</span></button><div class="dropdown-menu dashboard-dropdown dropdown-menu-start mt-2 py-1"><a class="dropdown-item d-flex align-items-center" href="javascript:void(0)" onClick="editFunc('+data['id']+')"><span class="fas fa-user-shield me-2"></span>Modifica</a><a class="dropdown-item text-danger d-flex align-items-center" href="javascript:void(0)" onClick="deleteFunc('+data['id']+')"><span class="fas fa-user-times me-2"></span>Elimina</a></div></div>';
+
+                            
+                        }
+                     },
+                ],
+        });
+    });
+
+    function add() {
+            $('#ProductForm').trigger("reset");
+            $('#ProductModal').html("Nuovo record");
+            $('#product-modal').modal('show');
+            $('#id').val('');
+            $("#password").attr("required", true);
+            $("#passl").html('Password');
+        }
+
+        function editFunc(id) {
+            $.ajaxSetup({
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+            });
+            $.ajax({
+                type: "POST",
+                url: "/edituser/" + id,
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function(res) {
+                    var is_staff = 0;
+                    if(res.is_staff == true) {
+                        is_staff = 1;
+                    }
+                    $('#ProductModal').html("Modifica dati");
+                    $('#product-modal').modal('show');
+                    $('#id').val(res.id);
+                    $('#username').val(res.username);
+                    $('#first_name').val(res.first_name);
+                    $('#last_name').val(res.last_name);
+                    $('#email').val(res.email);
+                    $('#is_staff').val(is_staff);
+                    $('#password').val("");
+                    $("#password").attr("required", false);
+                    $("#passl").html('Password (lasciare il campo in bianco per non modificare la password).');
+                }
+            });
+        }
+
+        function deleteFunc(id) {
+            if (confirm("Elimina record?") == true) {
+                var id = id;
+                $.ajaxSetup({
+                    data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+                });
+                // ajax
+                $.ajax({
+                    type: "POST",
+                    url: "/deleteuser/" + id,
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        var oTable = $('#ourtable2').DataTable();
+                        oTable.ajax.reload();
+                        const notyf = new Notyf({
+                            position: {
+                                x: 'right',
+                                y: 'top',
+                            },
+                            types: [
+                                {
+                                    type: 'info',
+                                    background: 'green',
+                                    dismissible: false
+                                }
+                            ]
+                        });
+                        notyf.open({
+                            type: 'info',
+                            message: 'Dati salvati con successo.'
+                        });
+                    }
+                });
+            }
+        }
+
+        $('#ProductForm').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'storeuser' %}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: (data) => {
+                    $("#product-modal").modal('hide');
+                    var oTable = $('#ourtable2').DataTable();
+                    oTable.ajax.reload();
+                    $("#btn-save").html('Submit');
+                    $("#btn-save").attr("disabled", false);
+                    const notyf = new Notyf({
+                        position: {
+                            x: 'right',
+                            y: 'top',
+                        },
+                        types: [
+                            {
+                                type: 'info',
+                                background: 'green',
+                                dismissible: false
+                            }
+                        ]
+                    });
+                    notyf.open({
+                        type: 'info',
+                        message: 'Dati salvati con successo.'
+                    });
+                },
+                error: function(data) {
+                    console.log(data);
+                    alert("Email già esistente.");
+                }
+            });
+        });
+
+</script>
+
+{% endblock %}
+
+
