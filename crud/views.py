@@ -12,6 +12,8 @@ from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 
 # Create your views here.
@@ -170,9 +172,9 @@ def register(request):
             users = User(
                 username=form.cleaned_data['username'],
                 password=make_password(form.cleaned_data['password1']),
-                is_staff=True,
+                is_staff=False,
                 is_active=True,
-                is_superuser=True,
+                is_superuser=False,
                 email=form.cleaned_data['email'],
                 first_name=form.cleaned_data['first_name'],
                 last_name=form.cleaned_data['last_name'],
@@ -181,6 +183,14 @@ def register(request):
                 users.full_clean()
             except ValidationError as e:
                 pass
+
+            try:
+                validate_password(form.cleaned_data['password1'], user=None, password_validators=None)
+            except ValidationError as e:
+                form.add_error('password1', e)  # to be displayed with the field's errors
+                return render(request, 'register.html', {'form': form})
+
+
             users.save()
             messages.success(request, 'Member was created successfully!')
             return HttpResponseRedirect('/register/success/')
