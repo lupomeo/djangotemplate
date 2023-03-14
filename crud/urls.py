@@ -28,4 +28,6 @@ urlpatterns = [
     path('storeuser', views.storeuser, name='storeuser'),
     path('edituser/<int:id>', views.edituser, name='edituser'),
     path('deleteuser/<int:id>', views.deleteuser, name='deleteuser'),
+    path('profile/', views.profile, name='profile'),
+    path('saveprofile/<int:id>', views.saveprofile, name='saveprofile'),
 ]

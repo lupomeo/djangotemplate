@@ -14,11 +14,13 @@
         <!-- Custom styles for this template-->
         {% block stylesheet %}{% endblock %}
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+        <!-- Notyf -->
+        <link type="text/css" href="/static/css/notyf.min.css" rel="stylesheet">
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a style="color: white; text-decoration: none; padding-left:10px" href="index">Home</a>
+            <a style="color: white; text-decoration: none; padding-left:10px" href="/index">Home</a>
             {% if user.is_staff %}
                 <a style="color: white; text-decoration: none; padding-left:10px" href="/dashboard"> Admin</a>
             {% endif %}
@@ -41,8 +43,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><a class="dropdown-item" href="/profile">Profile</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a  class="dropdown-item" href="/logout?next=/index"> Logout</a></li>
                     </ul>
@@ -74,6 +75,8 @@
         <script src="{% static 'js/scripts.js' %}"></script>
 
         <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+        <!-- Notyf -->
+        <script src="/static/js/notyf.min.js"></script>
         <script>
             $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
                 $(".alert-success").slideUp(500);

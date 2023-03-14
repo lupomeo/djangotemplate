@@ -1,0 +1,89 @@
+{% extends 'layout/appa.html' %}
+
+{% load static %}
+
+{% block body %}
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Profile</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Profile</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+            </div>
+            <div class="card-body">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <div class="bd-example">
+                    <form id="example-form" action="/saveprofile/{{ user.id }}" method="POST">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="username" class="col-sm-2 control-label">Username</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="username" name="username"
+                                    placeholder="Utente" maxlength="50" required="" value="{{ user.username }}" disabled>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="first_name" class="col-sm-2 control-label">Nome</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="first_name" name="first_name"
+                                    placeholder="Nome" maxlength="50" required="" value="{{ user.first_name }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="last_name" class="col-sm-2 control-label">Cognome</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="last_name" name="last_name"
+                                    placeholder="Cognome" maxlength="50" required="" value="{{ user.last_name }}">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="email" class="col-sm-2 control-label">Email</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="email" name="email"
+                                    placeholder="Email" maxlength="50" required="" value="{{ user.email }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="password" class="control-label">Password (Lasciare in bianco per non cambiare la password)</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="password" name="password"
+                                    placeholder="Password" maxlength="50">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="Gruppo" class="control-label">Gruppo</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control"
+                                    {% if user.is_staff %}
+                                        value="Staff"
+                                    {% else %}
+                                        value="User"
+                                    {% endif %}
+                                    placeholder="Gruppo" maxlength="50" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; padding-top: 30px;">
+                            <button  style="background-color: black; color: white; margin:0;"  type="submit">&nbsp;&nbsp;Salva&nbsp;&nbsp;<span></span></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+
+
+{% endblock %}
